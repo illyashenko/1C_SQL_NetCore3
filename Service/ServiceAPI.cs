@@ -13,17 +13,12 @@ namespace ForOneCSQLAppNC3.Service
         {
             ServiceSQL = serviceSQL;
         }
-        public List<dynamic> GetData(JSONParametrs Request)
+        public List<object> GetData(JSONParametrs request)
         {
-            if (Request.TimeOutInSecond == 0
-                   || Request.ConnectionString == string.Empty
-                       || Request.StringRequest == string.Empty)
-            {
+            if (request.TimeOutInSecond == 0 || request.ConnectionString == string.Empty || request.QueryString == string.Empty) 
                 return null;
-            }
 
-            var answer = ServiceSQL.SendRequest(Request);
-
+            var answer = ServiceSQL.SendRequest(request);
             return answer;
         }
     }

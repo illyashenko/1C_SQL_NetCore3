@@ -7,6 +7,6 @@ namespace ForOneCSQLAppNC3.Service
 {
     public interface IServiceAPI
     {
-        public List<dynamic> GetData(JSONParametrs Request);
+        public List<object> GetData(JSONParametrs request);
     }
 }

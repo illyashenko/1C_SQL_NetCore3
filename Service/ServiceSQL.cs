@@ -8,14 +8,23 @@ namespace ForOneCSQLAppNC3.Service
 {
     public class ServiceSQL : IServiceSQL
     {
-        public List<dynamic> SendRequest(JSONParametrs Request)
+        public List<object> SendRequest(JSONParametrs request)
         {
-            var Result = new List<dynamic>();
+            var Result = new List<object>();
 
-            using (IDbConnection dbConnection = new SqlConnection(Request.ConnectionString))
+            using (IDbConnection dbConnection = new SqlConnection(request.ConnectionString))
             {
                 dbConnection.Open();
-                Result = dbConnection.Query(Request.StringRequest, null, null, true, Request.TimeOutInSecond).ToList();
+
+                if (!request.StoredProcedure)
+                    Result = dbConnection.Query<object>(request.QueryString, null, null, true, request.TimeOutInSecond).ToList();
+                else
+                {
+                    var param = new DynamicParameters();
+                    foreach (KeyValuePair<string, string> keyValue in request.ProcedureParam)
+                        param.Add(keyValue.Key, keyValue.Value);
+                    var ans = dbConnection.Query<object>(request.QueryString, param, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
             }
 
             return Result;
