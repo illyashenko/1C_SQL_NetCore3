@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Data.SqlClient;
+using Npgsql;
 using Dapper;
 using System.Data;
+using ForOneCSQLAppNC3.Common;
 
 namespace ForOneCSQLAppNC3.Service
 {
@@ -12,7 +14,7 @@ namespace ForOneCSQLAppNC3.Service
         {
             var Result = new List<object>();
 
-            using (IDbConnection dbConnection = new SqlConnection(request.ConnectionString))
+            using (IDbConnection dbConnection = GetDbConnection(request))
             {
                 dbConnection.Open();
 
@@ -29,5 +31,20 @@ namespace ForOneCSQLAppNC3.Service
 
             return Result;
         }
+        #region Private
+        private IDbConnection GetDbConnection(JSONParametrs parametrs)
+        {
+            switch (parametrs.TypeSql)
+            {
+                case TypeSql.MsSql:
+                    return new SqlConnection(parametrs.ConnectionString);
+                case TypeSql.PostgreSql:
+                    return new NpgsqlConnection(parametrs.ConnectionString);
+                default:
+                    return null;
+            }
+        }
+        #endregion
+
     }
 }

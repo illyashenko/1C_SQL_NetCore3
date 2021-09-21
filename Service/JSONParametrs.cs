@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ForOneCSQLAppNC3.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace ForOneCSQLAppNC3.Service
 {
@@ -11,7 +13,7 @@ namespace ForOneCSQLAppNC3.Service
         public string ConnectionString { get; set; }
         public int TimeOutInSecond { get; set; }
         public bool StoredProcedure { get; set; }
-        public string PricedureName { get; set; }
+        public TypeSql TypeSql { get; set; }
         public Dictionary<string, string> ProcedureParam { get; set; } 
     }
 }
